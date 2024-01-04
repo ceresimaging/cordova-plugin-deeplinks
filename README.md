@@ -28,24 +28,33 @@ It is important not only to redirect users to your app from the web, but also pr
 **iOS Note:** you can use this plugin in iOS 8 applications. It will not crash the app, but it also is not gonna handle the links, because this is iOS 9 feature.
 
 ## Documentation
-- [Installation](#installation)
-- [How to build plugin in Xcode 6](#how-to-build-plugin-in-xcode-6)
-- [Cordova config preferences](#cordova-config-preferences)
-- [Application launch handling](#application-launch-handling)
-- [Android web integration](#android-web-integration)
-  - [Modify web pages](#modify-web-pages)
-  - [Verify your website on Webmaster Tools](#verify-your-website-on-webmaster-tools)
-  - [Connect your app in the Google Play console](#connect-your-app-in-the-google-play-console)
-  - [Digital Asset Links support](#digital-asset-links-support)
-- [Testing UL for Android locally](#testing-ul-for-android-locally)
-- [iOS web integration](#ios-web-integration)
-  - [Activate UL support in member center](#activate-ul-support-in-member-center)
-  - [Configure apple-app-site-association file for website](#configure-apple-app-site-association-file-for-website)
-- [Testing iOS application](#testing-ios-application)
-- [Useful notes on Universal Links for iOS](#useful-notes-on-universal-links-for-ios)
-  - [They don't work everywhere](#they-dont-work-everywhere)
-  - [How links handled in Safari](#how-links-handled-in-safari)
-- [Additional documentation links](#additional-documentation-links)
+- [Cordova Deeplinks Plugin](#cordova-deeplinks-plugin)
+  - [Supported Platforms](#supported-platforms)
+  - [Documentation](#documentation)
+    - [Installation](#installation)
+    - [Cordova config preferences](#cordova-config-preferences)
+      - [host](#host)
+      - [path](#path)
+      - [ios-team-id](#ios-team-id)
+      - [Prevent Android from creating multiple app instances](#prevent-android-from-creating-multiple-app-instances)
+    - [Application launch handling](#application-launch-handling)
+    - [Android web integration](#android-web-integration)
+      - [Modify web pages](#modify-web-pages)
+      - [Verify your website on Webmaster Tools](#verify-your-website-on-webmaster-tools)
+      - [Connect your app in the Google Play console](#connect-your-app-in-the-google-play-console)
+      - [Digital Asset Links support](#digital-asset-links-support)
+    - [Testing UL for Android locally](#testing-ul-for-android-locally)
+    - [iOS web integration](#ios-web-integration)
+      - [Activate UL support in member center](#activate-ul-support-in-member-center)
+      - [Configure apple-app-site-association file for website](#configure-apple-app-site-association-file-for-website)
+        - [Step 1](#step-1)
+        - [Step 2](#step-2)
+        - [Step 3](#step-3)
+    - [Testing iOS application](#testing-ios-application)
+    - [Useful notes on Universal Links for iOS](#useful-notes-on-universal-links-for-ios)
+      - [They don't work everywhere](#they-dont-work-everywhere)
+      - [How links handled in Safari](#how-links-handled-in-safari)
+    - [Additional documentation links](#additional-documentation-links)
 
 ### Installation
 This requires cordova 5.0+ (current stable 1.2.1)
@@ -57,7 +66,7 @@ cordova plugin add cordova-plugin-deeplinks
 It is also possible to install via repo url directly (**unstable**)
 
 ```sh
-cordova plugin add https://github.com/e-imaxina/cordova-plugin-deeplinks.git
+cordova plugin add https://github.com/ceresimaging/cordova-plugin-deeplinks.git
 ```
 
 ### Cordova config preferences

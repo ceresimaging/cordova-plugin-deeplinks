@@ -57,10 +57,17 @@ function writePreferences(cordovaContext, pluginPreferences) {
  */
 function removeOldOptions(manifestData) {
   var cleanManifest = manifestData;
-  var activities = manifestData['manifest']['application'][0]['activity'];
+  var mainActivityIndex = manifestData['manifest']['application'][0]['activity']
+    .findIndex(element => {
+      element['$']['android:name'] === 'mainActivity';
+    });
 
-  activities.forEach(removeIntentFiltersFromActivity);
-  cleanManifest['manifest']['application'][0]['activity'] = activities;
+  if (mainActivityIndex < 0) return cleanManifest;
+
+  var mainActivity = manifestData['manifest']['application'][0]['activity'][mainActivityIndex];
+
+  removeIntentFiltersFromActivity(mainActivity);
+  cleanManifest['manifest']['application'][0]['activity'][mainActivityIndex] = mainActivity;
 
   return cleanManifest;
 }
@@ -72,13 +79,16 @@ function removeOldOptions(manifestData) {
  *                            Changes applied to the passed object.
  */
 function removeIntentFiltersFromActivity(activity) {
+  if (activity['$']['android:name'] && activity['$']['android:name'] !== 'MainActivity') {
+    return;
+  }
+
   var oldIntentFilters = activity['intent-filter'];
   var newIntentFilters = [];
 
   if (oldIntentFilters == null || oldIntentFilters.length == 0) {
     return;
   }
-
   oldIntentFilters.forEach(function(intentFilter) {
     if (!isIntentFilterForUniversalLinks(intentFilter)) {
       newIntentFilters.push(intentFilter);
@@ -118,7 +128,7 @@ function isActionForUniversalLinks(actions) {
 
   var action = actions[0]['$']['android:name'];
 
-  return ('android.intent.action.VIEW' === action);
+  return ['android.intent.action.VIEW', 'android.nfc.action.NDEF_DISCOVERED'].includes(action);
 }
 
 /**
@@ -200,7 +210,7 @@ function injectOptions(manifestData, pluginPreferences) {
   // generate intent-filters
   pluginPreferences.hosts.forEach(function(host) {
     host.paths.forEach(function(hostPath) {
-      ulIntentFilters.push(createIntentFilter(host.name, host.scheme, hostPath));
+      ulIntentFilters.push(...createIntentFilters(host.name, host.scheme, hostPath));
     });
   });
 
@@ -248,12 +258,24 @@ function isLaunchActivity(activity) {
     var action = intentFilter['action'];
     var category = intentFilter['category'];
 
-    if (action == null || action.length != 1 || category == null || category.length != 1) {
+    if (action == null || action.length == 0 || category == null || category.length == 0) {
       return false;
     }
 
-    var isMainAction = ('android.intent.action.MAIN' === action[0]['$']['android:name']);
-    var isLauncherCategory = ('android.intent.category.LAUNCHER' === category[0]['$']['android:name']);
+    var isMainAction = false;
+    var isLauncherCategory = false;
+
+    action.forEach(function (item) {
+      if (!isMainAction) {
+        isMainAction = ('android.intent.action.MAIN' === item['$']['android:name']);
+      }
+    });
+
+    category.forEach(function (item) {
+      if (!isLauncherCategory) {
+        isLauncherCategory = ('android.intent.category.LAUNCHER' === item['$']['android:name']);
+      }
+    });
 
     return isMainAction && isLauncherCategory;
   });
@@ -269,9 +291,10 @@ function isLaunchActivity(activity) {
  * @param {String} pathName - host path
  * @return {Object} intent-filter as a JSON object
  */
-function createIntentFilter(host, scheme, pathName) {
+function createIntentFilters(host, scheme, pathName) {
   var intentFilter = {
     '$': {
+      'android:exported': 'true',
       'android:autoVerify': 'true'
     },
     'action': [{
@@ -298,7 +321,32 @@ function createIntentFilter(host, scheme, pathName) {
 
   injectPathComponentIntoIntentFilter(intentFilter, pathName);
 
-  return intentFilter;
+  var nfcIntentFilter = {
+    '$': {
+      'android:exported': 'true',
+      'android:autoVerify': 'true'
+    },
+    'action': [{
+      '$': {
+        'android:name': 'android.nfc.action.NDEF_DISCOVERED'
+      }
+    }],
+    'category': [{
+      '$': {
+        'android:name': 'android.intent.category.DEFAULT'
+      }
+    }],
+    'data': [{
+      '$': {
+        'android:host': host,
+        'android:scheme': scheme
+      }
+    }]
+  };
+
+  injectPathComponentIntoIntentFilter(nfcIntentFilter, pathName);
+
+  return [intentFilter, nfcIntentFilter];
 }
 
 /**

@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:e-imaxina/cordova-plugin-deeplinks.git"
+    "url": "git@github.com:ceresimaging/cordova-plugin-deeplinks.git"
   },
   "keywords": [
     "cordova",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "cordova-lib": "^9.0.1",
-    "glob": "^7.1.4",
+    "glob": "^7.2.3",
     "mkpath": ">=1.0.0",
     "node-version-compare": ">=1.0.1",
     "plist": ">=1.2.0",
@@ -43,7 +43,7 @@
   "author": "Nikolay Demyankov for Nordnet Bank AB",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/e-imaxina/cordova-plugin-deeplinks/issues"
+    "url": "https://github.com/ceresimaging/cordova-plugin-deeplinks/issues"
   },
-  "homepage": "https://github.com/e-imaxina/cordova-plugin-deeplinks#readme"
+  "homepage": "https://github.com/ceresimaging/cordova-plugin-deeplinks#readme"
 }

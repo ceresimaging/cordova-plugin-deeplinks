@@ -59,7 +59,7 @@
   * - add .entitlements file to Code Sign Entitlements preference.
   */
  function activateAssociativeDomains(context, projFolder) {
-     var xcode = context.requireCordovaModule('xcode');
+     var xcode = require('xcode');
  
      var projectPath = path.join(projFolder, 'project.pbxproj');
      var pbxProject;

@@ -272,6 +272,7 @@ function isLaunchActivity(activity) {
 function createIntentFilter(host, scheme, pathName) {
   var intentFilter = {
     '$': {
+      'android:exported': 'true',
       'android:autoVerify': 'true'
     },
     'action': [{

@@ -8,10 +8,9 @@ Which is:
 
 const path = require('path');
 const compare = require('node-version-compare');
-const glob = require('glob');
+const { globSync } = require('glob');
 const xcode = require('xcode');
 const fileSystem = require('fs');
-const shelljs = require('shelljs');
 const ConfigXmlHelper = require('../configXmlHelper.js');
 
 const IOS_DEPLOYMENT_TARGET = '8.0';
@@ -174,7 +173,7 @@ function loadProjectFile() {
       projectFile = platform_ios.parseProjectFile(iosPlatformPath());
     } catch (e) {
       // Then cordova 7.0
-      const project_files = glob.sync(
+      const project_files = globSync(
         path.join(iosPlatformPath(), '*.xcodeproj', 'project.pbxproj'),
       );
 
@@ -206,7 +205,7 @@ function loadProjectFile() {
           fs.writeFileSync(pbxPath, xcodeproj.writeSync());
           if (Object.keys(frameworks).length === 0) {
             // If there is no framework references remain in the project, just remove this file
-            shelljs.rm('-rf', frameworks_file);
+            fs.rmSync(frameworks_file, { recursive: true, force: true });
             return;
           }
           fs.writeFileSync(

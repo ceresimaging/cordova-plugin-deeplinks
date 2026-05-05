@@ -1,7 +1,7 @@
 {
   "name": "cordova-plugin-deeplinks",
-  "version": "1.2.0",
-  "description": "Cordova plugin to add in your application support for Universal Links (iOS 9) and Deep Links (Android). Basically, open application through the link in the browser.",
+  "version": "2.0.0",
+  "description": "Ceres fork of cordova-plugin-deeplinks. Adds Universal Links (iOS) and App Links (Android) support to Cordova apps, with patches for cordova-ios 8.x and Android 12+.",
   "cordova": {
     "id": "cordova-plugin-deeplinks",
     "platforms": [
@@ -23,24 +23,22 @@
     "cordova-ios",
     "cordova-android",
     "ios",
-    "android"
+    "android",
+    "ceres"
   ],
   "engines": {
+    "node": ">=20.17",
     "cordova-ios": ">=3.8",
     "cordova-android": ">=4"
   },
   "dependencies": {
-    "cordova-lib": "^9.0.1",
-    "glob": "^7.1.4",
-    "mkpath": ">=1.0.0",
-    "node-version-compare": ">=1.0.1",
-    "plist": ">=1.2.0",
-    "rimraf": ">=2.4",
-    "shelljs": "^0.8.3",
-    "xcode": "^2.0.0",
-    "xml2js": ">=0.4"
+    "glob": "13.0.6",
+    "node-version-compare": "1.0.3",
+    "plist": "4.0.0",
+    "xcode": "3.0.1",
+    "xml2js": "0.6.2"
   },
-  "author": "Nikolay Demyankov for Nordnet Bank AB",
+  "author": "Ceres Imaging <emanzano@ceresimaging.net> (fork; original by Nikolay Demyankov for Nordnet Bank AB)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ceresimaging/cordova-plugin-deeplinks/issues"
